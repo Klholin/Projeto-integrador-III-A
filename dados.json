@@ -1,0 +1,160 @@
+{
+  "_aviso": "PROTÓTIPO ACADÊMICO — todos os nomes, números de processo e dados abaixo são FICTÍCIOS.",
+  "clientes": [
+    {
+      "codigo": "CLI-1001",
+      "nome": "Maria Exemplo da Silva",
+      "salt": "fbcadf25e972bb98d552988e5a549c1a",
+      "hash_senha": "e18a1d4bf8fbf13382fb9c289c2d72f1dd204ab31fe778c91b97bf4cb1ca3cc2",
+      "processos": [
+        "0001001-11.2026.8.09.9999",
+        "0001003-33.2025.8.09.9999"
+      ]
+    },
+    {
+      "codigo": "CLI-1002",
+      "nome": "João Fictício Pereira",
+      "salt": "e0795eebfcdd528a57014c49d69fb816",
+      "hash_senha": "adc2a43cac92b93a395280b7eaf9b83249eff71c75f6bf6f0d1a14cb91c6d2eb",
+      "processos": [
+        "0001002-22.2026.8.09.9999",
+        "0001004-44.2026.4.01.9999"
+      ]
+    },
+    {
+      "codigo": "CLI-1003",
+      "nome": "Ana Teste Rodrigues",
+      "salt": "0cf8b7a10690b67fe9ce072c5e5f5baa",
+      "hash_senha": "730c1a23c410dcaace0fee2482db319e78daed0c75551babeea623c78d017664",
+      "processos": [
+        "0001005-55.2026.8.09.9999"
+      ]
+    }
+  ],
+  "processos": [
+    {
+      "numero": "0001001-11.2026.8.09.9999",
+      "tipo_acao": "Obrigação de fazer – cobertura de tratamento por plano de saúde",
+      "orgao_julgador": "1ª Vara Cível (fictícia)",
+      "data_distribuicao": "03/02/2026",
+      "fase": "Sentença proferida",
+      "ultima_atualizacao": "21/10/2026",
+      "advogado_responsavel": "Dra. Helena Duarte (fictícia)",
+      "proximo_passo": "Aguardar prazo de recurso da parte contrária (15 dias úteis).",
+      "movimentacoes": [
+        {
+          "data": "21/10/2026",
+          "descricao": "Sentença de procedência publicada."
+        },
+        {
+          "data": "02/09/2026",
+          "descricao": "Audiência de instrução realizada."
+        },
+        {
+          "data": "10/03/2026",
+          "descricao": "Tutela de urgência deferida."
+        },
+        {
+          "data": "03/02/2026",
+          "descricao": "Petição inicial distribuída."
+        }
+      ]
+    },
+    {
+      "numero": "0001002-22.2026.8.09.9999",
+      "tipo_acao": "Revisão de reajuste abusivo de mensalidade de plano de saúde",
+      "orgao_julgador": "Juizado Especial Cível (fictício)",
+      "data_distribuicao": "15/05/2026",
+      "fase": "Aguardando audiência de conciliação",
+      "ultima_atualizacao": "08/10/2026",
+      "advogado_responsavel": "Dr. Rafael Moreira (fictício)",
+      "proximo_passo": "Audiência de conciliação marcada para 18/11/2026 às 14h (comparecimento obrigatório).",
+      "movimentacoes": [
+        {
+          "data": "08/10/2026",
+          "descricao": "Audiência de conciliação designada."
+        },
+        {
+          "data": "20/06/2026",
+          "descricao": "Citação da operadora realizada."
+        },
+        {
+          "data": "15/05/2026",
+          "descricao": "Petição inicial distribuída."
+        }
+      ]
+    },
+    {
+      "numero": "0001003-33.2025.8.09.9999",
+      "tipo_acao": "Indenização por danos morais e materiais – responsabilidade civil médica",
+      "orgao_julgador": "3ª Vara Cível (fictícia)",
+      "data_distribuicao": "12/08/2025",
+      "fase": "Perícia médica em andamento",
+      "ultima_atualizacao": "15/10/2026",
+      "advogado_responsavel": "Dra. Helena Duarte (fictícia)",
+      "proximo_passo": "Aguardar entrega do laudo pericial; o escritório avisará sobre manifestação.",
+      "movimentacoes": [
+        {
+          "data": "15/10/2026",
+          "descricao": "Perito nomeado aceitou o encargo."
+        },
+        {
+          "data": "30/07/2026",
+          "descricao": "Deferida a produção de prova pericial."
+        },
+        {
+          "data": "14/11/2025",
+          "descricao": "Contestação apresentada pelo réu."
+        },
+        {
+          "data": "12/08/2025",
+          "descricao": "Petição inicial distribuída."
+        }
+      ]
+    },
+    {
+      "numero": "0001004-44.2026.4.01.9999",
+      "tipo_acao": "Fornecimento de medicamento pelo SUS",
+      "orgao_julgador": "Vara Federal (fictícia)",
+      "data_distribuicao": "07/04/2026",
+      "fase": "Recurso no tribunal",
+      "ultima_atualizacao": "27/10/2026",
+      "advogado_responsavel": "Dr. Rafael Moreira (fictício)",
+      "proximo_passo": "Aguardar julgamento da apelação da União.",
+      "movimentacoes": [
+        {
+          "data": "27/10/2026",
+          "descricao": "Autos remetidos ao tribunal."
+        },
+        {
+          "data": "25/08/2026",
+          "descricao": "União interpôs apelação."
+        },
+        {
+          "data": "30/07/2026",
+          "descricao": "Sentença de procedência publicada."
+        },
+        {
+          "data": "07/04/2026",
+          "descricao": "Petição inicial distribuída."
+        }
+      ]
+    },
+    {
+      "numero": "0001005-55.2026.8.09.9999",
+      "tipo_acao": "Obrigação de fazer – cirurgia negada por plano de saúde",
+      "orgao_julgador": "2ª Vara Cível (fictícia)",
+      "data_distribuicao": "22/09/2026",
+      "fase": "Petição inicial distribuída",
+      "ultima_atualizacao": "22/09/2026",
+      "advogado_responsavel": "Dra. Helena Duarte (fictícia)",
+      "proximo_passo": "Aguardar análise do pedido de tutela de urgência pelo juiz.",
+      "movimentacoes": [
+        {
+          "data": "22/09/2026",
+          "descricao": "Petição inicial distribuída com pedido de tutela de urgência."
+        }
+      ]
+    }
+  ]
+}
