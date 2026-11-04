@@ -1,0 +1,15 @@
+# Certificados e chave privada TLS (gerar com: python gerar_certificado.py)
+certs/*.pem
+certs/*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDEs / sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
