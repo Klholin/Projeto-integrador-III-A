@@ -1,0 +1,211 @@
+# =============================================================================
+# Especificação de Intenção (IOP) — FONTE DA VERDADE do sistema
+# Projeto Integrador III-A — PUC Goiás, ADS EaD, 2026
+#
+# Esquema: Intent-Oriented Programming (System / Components / Flow /
+#          ErrorHandling / ImplementationMap).
+# Regra do projeto: toda mudança de comportamento começa AQUI; depois o
+# código é (re)gerado/ajustado e o verificador confirma o alinhamento:
+#     python verificar_intencoes.py
+#
+# Partes lidas pelo programa em tempo de execução:
+#   - properties dos Components (limites, algoritmos, campos expostos)
+#   - ErrorHandling (todas as mensagens de erro exibidas ao usuário)
+# =============================================================================
+
+System ConsultaDeProcessos:
+  description: "Permitir que clientes do escritório Almeida Campos Advogados Associados (direito médico) consultem, com segurança, o andamento dos próprios processos."
+  properties:
+    arquitetura: cliente-servidor
+    transporte: TCP protegido por TLS
+    interface: linha de comando
+    armazenamento: arquivo JSON somente com dados fictícios
+    linguagem: Python 3, somente biblioteca padrão
+    conformidade: LGPD (dados de saúde são dados sensíveis) e sigilo profissional
+
+  Components:
+    - CanalSeguro:
+        description: "Estabelecer a conexão criptografada e garantir a identidade do servidor"
+        inputs: conexão TCP, certificado, chave privada
+        outputs: conexão TLS
+        action: realizar o handshake TLS; no cliente, validar o certificado e o nome do host
+        properties:
+          versao_minima: TLS 1.2
+          conexao_sem_tls: recusada
+
+    - CanalDeMensagens:
+        description: "Transportar intenções e respostas entre cliente e servidor"
+        inputs: conexão TLS, mensagem
+        outputs: mensagem
+        action: serializar e desserializar uma mensagem JSON por linha
+        properties:
+          formato: JSON Lines (UTF-8)
+          tamanho_maximo_kb: 64
+
+    - GerenciadorDeSenhas:
+        description: "Proteger as senhas armazenadas"
+        inputs: senha, salt
+        outputs: hash
+        action: gerar e verificar o hash da senha
+        properties:
+          algoritmo: PBKDF2-HMAC-SHA256
+          iteracoes: 200000
+          comparacao: tempo constante
+
+    - ValidadorDeDocumento:
+        description: "Reconhecer o documento com que o cliente se identifica"
+        inputs: documento digitado
+        outputs: documento normalizado ou inválido
+        action: identificar o tipo, remover a pontuação e validar os dígitos verificadores (CPF, CNPJ) ou o número e a UF (CRM)
+        properties:
+          tipos_aceitos: CPF, CNPJ, CRM
+          formato_crm: número e UF em qualquer ordem e separador (ex.: CRM-GO 12345, 12345/GO)
+          documentos_por_cliente: um ou mais; todos levam à mesma conta
+          exibicao_em_log: mascarada (LGPD)
+
+    - RepositorioDeProcessos:
+        description: "Fornecer os dados de clientes e processos"
+        inputs: documento do cliente, número do processo
+        outputs: Cliente, Processo
+        action: ler clientes e processos do arquivo dados.json
+        properties:
+          acesso: somente leitura
+          dados: fictícios
+
+    - ValidadorDeCredenciais:
+        description: "Confirmar a identidade do cliente"
+        inputs: documento normalizado, senha
+        outputs: cliente autenticado
+        action: verificar as credenciais no RepositorioDeProcessos usando o GerenciadorDeSenhas
+        properties:
+          max_tentativas: 3
+          documento_invalido: conta como tentativa
+          resposta_uniforme: mesma mensagem e mesmo tempo para documento não cadastrado ou senha errada
+
+    - ControleDeAcesso:
+        description: "Garantir que cada cliente veja somente o que é seu"
+        inputs: sessão, número do processo
+        outputs: permitido ou negado
+        action: exigir sessão autenticada e verificar a posse do processo
+
+    - ConsultaDeProcessos:
+        description: "Montar as informações de acompanhamento processual"
+        inputs: cliente autenticado, número do processo
+        outputs: resumo dos processos, detalhes do processo
+        action: obter os processos no RepositorioDeProcessos e montar as respostas
+        properties:
+          campos_resumo: numero, tipo_acao, fase, ultima_atualizacao
+          detalhes_clinicos: nunca expostos
+
+    - RegistroDeAuditoria:
+        description: "Manter rastro dos acessos para segurança"
+        inputs: evento
+        action: registrar conexões, logins, consultas, falhas e tentativas negadas
+        properties:
+          senhas: nunca registradas
+          documentos: sempre mascarados
+
+    - ClienteDeRede:
+        description: "Representar o servidor no lado do cliente"
+        inputs: intenção, dados
+        outputs: resposta
+        action: enviar intenções ao servidor pelo CanalDeMensagens e receber as respostas
+
+    - InterfaceDoCliente:
+        description: "Conversar com o usuário no terminal"
+        inputs: escolhas do usuário
+        outputs: telas formatadas
+        action: exibir o menu, coletar entradas e apresentar as respostas
+        properties:
+          identificacao: exemplos de CPF, CNPJ e CRM visíveis antes da digitação
+          senha: digitada sem eco na tela
+
+  Flow:
+    on conexão recebida:
+      - estabelecer conexão via CanalSeguro
+      - decision:
+          if handshake falhar:
+            - registrar em RegistroDeAuditoria
+            - encerrar conexão
+          else:
+            - abrir sessão não autenticada
+            - receber intenções pelo CanalDeMensagens
+
+    on intenção autenticar:
+      - reconhecer documento com ValidadorDeDocumento
+      - decision:
+          if documento inválido:
+            - registrar falha em RegistroDeAuditoria
+            - verificar condição de bloqueio
+            - responder documento_invalido
+          else:
+            - validar credenciais com ValidadorDeCredenciais
+            - decision:
+                if válidas:
+                  - marcar sessão como autenticada
+                  - registrar login com documento mascarado em RegistroDeAuditoria
+                  - responder com o nome do cliente
+                else:
+                  - registrar falha em RegistroDeAuditoria
+                  - verificar condição de bloqueio
+                  - responder credenciais_invalidas
+
+    on intenção consultar_meus_processos:
+      - exigir sessão autenticada via ControleDeAcesso
+      - obter resumo via ConsultaDeProcessos
+      - registrar consulta em RegistroDeAuditoria
+      - responder com a lista de processos
+
+    on intenção ver_andamento_do_processo:
+      - exigir sessão autenticada via ControleDeAcesso
+      - verificar posse do processo via ControleDeAcesso
+      - decision:
+          if permitido:
+            - obter detalhes via ConsultaDeProcessos
+            - registrar consulta em RegistroDeAuditoria
+            - responder com os detalhes
+          else:
+            - registrar tentativa negada em RegistroDeAuditoria
+            - responder processo_nao_encontrado
+
+    on intenção encerrar_sessao:
+      - responder com confirmação
+      - encerrar conexão
+
+  ErrorHandling:
+    documento_invalido → "Documento inválido. Informe CPF, CNPJ ou CRM com UF (ex.: CRM-GO 12345). Tentativas restantes: {restantes}."
+    credenciais_invalidas → "Documento ou senha inválidos. Tentativas restantes: {restantes}."
+    bloqueio → "Número máximo de tentativas atingido. Conexão encerrada."
+    login_necessario → "É necessário fazer login antes de consultar."
+    processo_nao_encontrado → "Processo não encontrado entre os seus processos."
+    intencao_desconhecida → "Intenção desconhecida: {intencao}."
+    mensagem_invalida → "Mensagem inválida: {detalhe}"
+    certificado_nao_confiavel → "Certificado do servidor NÃO é confiável — conexão abortada."
+    servidor_indisponivel → "Não foi possível conectar a {endereco}. O servidor está em execução?"
+    conexao_perdida → "Conexão perdida com o servidor."
+
+  ImplementationMap:
+    ComponentType: Component
+    TargetLanguage: Python 3
+    ImplementationPattern: |
+      @componente("<ComponentName>")
+      class <ComponentName>:
+          """Intenção: <description>"""
+          def __init__(self, <properties>): ...
+          def <action>(self, <inputs>) -> <outputs>: ...
+
+  ImplementationMap:
+    ComponentType: Flow
+    TargetLanguage: Python 3
+    ImplementationPattern: |
+      @fluxo("<intencao>")
+      def <intencao>(self, sessao, requisicao) -> dict:
+          # um passo do Flow = uma linha de código, na mesma ordem
+          ...
+
+  ImplementationMap:
+    ComponentType: ErrorHandling
+    TargetLanguage: Python 3
+    ImplementationPattern: |
+      raise ErroDeIntencao("<error_condition>", **dados)
+      # a mensagem é lida desta especificação em tempo de execução
