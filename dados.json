@@ -1,33 +1,80 @@
 {
-  "_aviso": "PROTÓTIPO ACADÊMICO — todos os nomes, números de processo e dados abaixo são FICTÍCIOS.",
+  "_aviso": "PROTÓTIPO ACADÊMICO — todos os nomes, documentos (CPF, CNPJ, CRM), números de processo e dados abaixo são FICTÍCIOS. Documentos guardados sem pontuação; CRM no formato UF-NUMERO.",
   "clientes": [
     {
-      "codigo": "CLI-1001",
       "nome": "Maria Exemplo da Silva",
-      "salt": "fbcadf25e972bb98d552988e5a549c1a",
-      "hash_senha": "e18a1d4bf8fbf13382fb9c289c2d72f1dd204ab31fe778c91b97bf4cb1ca3cc2",
+      "documentos": [
+        {
+          "tipo": "CPF",
+          "numero": "11144477735"
+        }
+      ],
+      "salt": "78e3d34e31a5aa137b57afa230d0e34f",
+      "hash_senha": "3937229cbbec9fdc00108d6d96633aff96ce0e505d2498bb3185709cf887dbfc",
       "processos": [
         "0001001-11.2026.8.09.9999",
         "0001003-33.2025.8.09.9999"
       ]
     },
     {
-      "codigo": "CLI-1002",
       "nome": "João Fictício Pereira",
-      "salt": "e0795eebfcdd528a57014c49d69fb816",
-      "hash_senha": "adc2a43cac92b93a395280b7eaf9b83249eff71c75f6bf6f0d1a14cb91c6d2eb",
+      "documentos": [
+        {
+          "tipo": "CPF",
+          "numero": "22255588846"
+        }
+      ],
+      "salt": "fe5eb6ca2c057377fb35812d4512b00e",
+      "hash_senha": "9fd58936011924acb33ba24f060ab7444f6b9640a48c3e2d4f51f6a75ddc7b3c",
       "processos": [
         "0001002-22.2026.8.09.9999",
         "0001004-44.2026.4.01.9999"
       ]
     },
     {
-      "codigo": "CLI-1003",
       "nome": "Ana Teste Rodrigues",
-      "salt": "0cf8b7a10690b67fe9ce072c5e5f5baa",
-      "hash_senha": "730c1a23c410dcaace0fee2482db319e78daed0c75551babeea623c78d017664",
+      "documentos": [
+        {
+          "tipo": "CPF",
+          "numero": "33366699957"
+        }
+      ],
+      "salt": "621644e6f69a58fd6818b9c5fce28dc0",
+      "hash_senha": "50d520a401de3cf3b5aa9dc844df547452265916535ab459ae53a4b8581ef50b",
       "processos": [
         "0001005-55.2026.8.09.9999"
+      ]
+    },
+    {
+      "nome": "Clínica Exemplo Saúde Ltda.",
+      "documentos": [
+        {
+          "tipo": "CNPJ",
+          "numero": "11222333000181"
+        }
+      ],
+      "salt": "687e88441b298efd7bd5a7b5d25f3e00",
+      "hash_senha": "87f0f498ed991cd7b957a132fdd26fcac95fa259fca68dd40c8ffbe11dea8706",
+      "processos": [
+        "0001006-66.2026.8.09.9999"
+      ]
+    },
+    {
+      "nome": "Dr. Carlos Modelo Andrade",
+      "documentos": [
+        {
+          "tipo": "CPF",
+          "numero": "44477711107"
+        },
+        {
+          "tipo": "CRM",
+          "numero": "GO-99001"
+        }
+      ],
+      "salt": "c66c3ed8374189a9bdf8443a2fd310ee",
+      "hash_senha": "85f8b4a84d5fba024cf059f012528d408832bfda2ce341ac29e3e59c50394545",
+      "processos": [
+        "0001007-77.2025.8.09.9999"
       ]
     }
   ],
@@ -153,6 +200,58 @@
         {
           "data": "22/09/2026",
           "descricao": "Petição inicial distribuída com pedido de tutela de urgência."
+        }
+      ]
+    },
+    {
+      "numero": "0001006-66.2026.8.09.9999",
+      "tipo_acao": "Cobrança de glosas indevidas de procedimentos por operadora de plano de saúde",
+      "orgao_julgador": "4ª Vara Cível (fictícia)",
+      "data_distribuicao": "18/03/2026",
+      "fase": "Contestação apresentada",
+      "ultima_atualizacao": "14/10/2026",
+      "advogado_responsavel": "Dr. Rafael Moreira (fictício)",
+      "proximo_passo": "Apresentar réplica à contestação da operadora até 05/11/2026.",
+      "movimentacoes": [
+        {
+          "data": "14/10/2026",
+          "descricao": "Intimação para réplica."
+        },
+        {
+          "data": "29/07/2026",
+          "descricao": "Operadora apresentou contestação."
+        },
+        {
+          "data": "18/03/2026",
+          "descricao": "Petição inicial distribuída."
+        }
+      ]
+    },
+    {
+      "numero": "0001007-77.2025.8.09.9999",
+      "tipo_acao": "Defesa em ação indenizatória por alegado erro médico",
+      "orgao_julgador": "5ª Vara Cível (fictícia)",
+      "data_distribuicao": "09/10/2025",
+      "fase": "Aguardando sentença",
+      "ultima_atualizacao": "20/10/2026",
+      "advogado_responsavel": "Dra. Helena Duarte (fictícia)",
+      "proximo_passo": "Aguardar sentença; alegações finais já apresentadas.",
+      "movimentacoes": [
+        {
+          "data": "20/10/2026",
+          "descricao": "Autos conclusos para sentença."
+        },
+        {
+          "data": "30/09/2026",
+          "descricao": "Alegações finais apresentadas pela defesa."
+        },
+        {
+          "data": "12/06/2026",
+          "descricao": "Laudo pericial favorável juntado aos autos."
+        },
+        {
+          "data": "09/10/2025",
+          "descricao": "Citação do médico réu."
         }
       ]
     }
